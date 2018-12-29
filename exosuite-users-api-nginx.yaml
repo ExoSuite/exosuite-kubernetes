@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: exosuite-users-api-nginx
+  labels:
+    app: exosuite-users-api-nginx
+spec:
+  type: ClusterIP
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443
+  selector:
+    run: exosuite-users-api-nginx
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exosuite-users-api-nginx
+spec:
+  selector:
+    matchLabels:
+      run: exosuite-users-api-nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: exosuite-users-api-nginx
+    spec:
+      containers:
+        - name: exosuite-users-api-nginx
+          image: dev.exosuite.fr:5000/exosuite/exosuite-users-api-nginx
+          ports:
+            - containerPort: 443
+      imagePullSecrets:
+        - name: staging-registry

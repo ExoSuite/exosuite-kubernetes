@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: exosuite-users-api-php-fpm
+  labels:
+    app: exosuite-users-api-php-fpm
+spec:
+  type: ClusterIP
+  ports:
+    - name: php-fpm
+      protocol: TCP
+      port: 9000
+  selector:
+    run: exosuite-users-api-php-fpm
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exosuite-users-api-php-fpm
+spec:
+  selector:
+    matchLabels:
+      run: exosuite-users-api-php-fpm
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: exosuite-users-api-php-fpm
+    spec:
+      containers:
+        - name: exosuite-users-api-php-fpm
+          image: dev.exosuite.fr:5000/exosuite/exosuite-users-api-php-fpm
+          ports:
+            - containerPort: 9000
+      imagePullSecrets:
+        - name: staging-registry

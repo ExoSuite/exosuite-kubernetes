@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: exosuite-users-api-nginx
+  name: <CONTAINER>
   labels:
-    app: exosuite-users-api-nginx
+    app: <CONTAINER>
 spec:
   type: ClusterIP
   ports:
@@ -11,12 +11,12 @@ spec:
       protocol: TCP
       port: 443
   selector:
-    run: exosuite-users-api-nginx
+    run: <CONTAINER>
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exosuite-users-api-nginx
+  name: <CONTAINER>
 spec:
   strategy:
     type: RollingUpdate
@@ -25,17 +25,17 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      run: exosuite-users-api-nginx
+      run: <CONTAINER>
   replicas: 1
   template:
     metadata:
       labels:
-        run: exosuite-users-api-nginx
+        run: <CONTAINER>
     spec:
       containers:
-        - name: exosuite-users-api-nginx
-          image: dev.exosuite.fr:5000/exosuite/exosuite-users-api-nginx:<VERSION>
+        - name: <CONTAINER>
+          image: <REGISTRY>/<CONTAINER>:<VERSION>
           ports:
             - containerPort: 443
       imagePullSecrets:
-        - name: staging-registry
+        - name: <REGISTRY_SECRET>

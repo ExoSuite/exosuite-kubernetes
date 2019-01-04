@@ -17,6 +17,31 @@ class Enum(EnumProvider):
         return str(self.value)
 
 
+class Env(Enum):
+    STAGING = "staging"
+    PRODUCTION = "production"
+
+
+class Directory(Enum):
+    API = "build/api"
+    WEBSITE = "build/website"
+    TEMPLATES = "templates"
+    REDIS = "redis"
+
+    def toPath(self, env: Env = None):
+        path = os.path.dirname(os.path.realpath(__file__))
+        path += "/../" + self.value + "/"
+        if env is None:
+            return path
+
+        return path + str(env) + '/'
+
+
+class ContainerType(Enum):
+    PHP_FPM = "php-fpm"
+    NGINX = "nginx"
+
+
 class Container(Enum):
     PHP_FPM_API = "exosuite-users-api-php-fpm"
     PHP_FPM_WEBSITE = "exosuite-website-php-fpm"
@@ -25,19 +50,21 @@ class Container(Enum):
     REDIS_LIVE = "exosuite-redis-live"
     REDIS_STORE = "exosuite-redis-store"
 
-    def toYaml(self):
-        return self.value + '.yaml'
+    def toYaml(self, outputDir: Directory, env: Env = None):
 
+        return outputDir.toPath(env) + self.value + '.yaml'
 
-class Env(Enum):
-    STAGING = "staging"
-    PRODUCTION = "production"
+    def toProjectDirectory(self):
+        container_str = str(self)
+        pos = container_str.find(str(ContainerType.PHP_FPM))
+        if pos > 0:
+            return container_str[0:pos - 1] # -1 remove the '-' char
 
+        pos = container_str.find(str(ContainerType.NGINX))
+        return container_str[0:pos - 1] # -1 remove the '-' char
 
-class Directory(Enum):
-    API = "build/api/"
-    WEBSITE = "build/website/"
+    def isPhpFpm(self):
+        return str(self).find(str(ContainerType.PHP_FPM)) > 0
 
-    def toPath(self):
-        path = os.path.dirname(os.path.realpath(__file__))
-        return path + "/../" + self.value
+    def isNginx(self):
+        return str(self).find(str(ContainerType.NGINX)) > 0

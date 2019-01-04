@@ -37,5 +37,16 @@ spec:
           image: <REGISTRY>/<CONTAINER>:<VERSION>
           ports:
             - containerPort: 9000
+          lifecycle:
+            postStart:
+              exec:
+                command: [
+                  "/bin/sh",
+                  "-c",
+                  "php /var/www/<DIRECTORY>/artisan config:cache \
+                  && php /var/www/<DIRECTORY>/artisan route:cache \
+                  && php /var/www/<DIRECTORY>/artisan view:cache
+                  "
+                ]
       imagePullSecrets:
         - name: <REGISTRY_SECRET>

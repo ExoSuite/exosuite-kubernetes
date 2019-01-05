@@ -51,6 +51,8 @@ class DockerImage(Enum):
 
 class SystemCommand(Enum):
     KUBECTL_APPLY = "kubectl apply -f "
+    LARAVEL_MIGRATE_FRESH = "migrate:fresh --force"
+    LARAVEL_MIGRATE = "migrate --force"
 
 
 class Container(Enum):
@@ -113,6 +115,7 @@ class Token(Enum):
     DATABASE = "<DATABASE>"
     DATABASE_USER = "<DATABASE_USER>"
     DATABASE_PASSWORD = "<DATABASE_PASSWORD>"
+    MIGRATE_CMD = "<MIGRATE>"
 
     def key(self):
         return str(self.value).replace("<", '').replace(">", '')

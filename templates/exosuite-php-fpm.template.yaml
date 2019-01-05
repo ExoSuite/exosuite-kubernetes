@@ -47,7 +47,8 @@ spec:
                   "-c",
                   "php /var/www/<DIRECTORY>/artisan config:cache \
                   && php /var/www/<DIRECTORY>/artisan route:cache \
-                  && php /var/www/<DIRECTORY>/artisan view:cache
+                  && php /var/www/<DIRECTORY>/artisan view:cache \
+                  && php /var/www/<DIRECTORY>/artisan <MIGRATE>
                   "
                 ]
       imagePullSecrets:

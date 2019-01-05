@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: <ENV>
+  name: <CONTAINER>-config
+  labels:
+    app: <CONTAINER>
+data:
+  POSTGRES_DB: <DATABASE>
+  POSTGRES_USER: <DATABASE_USER>
+  POSTGRES_PASSWORD: <DATABASE_PASSWORD>
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: <ENV>
+  name: <CONTAINER>-volume
+  labels:
+    type: local
+    app: <CONTAINER>
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: <ENV>
+  name: <CONTAINER>-claim
+  labels:
+    app: <CONTAINER>
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: <ENV>
+  name: <CONTAINER>
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      run: <CONTAINER>
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: <CONTAINER>
+    spec:
+      containers:
+        - name: <CONTAINER>
+          image: <IMAGE>
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: <CONTAINER>-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: <CONTAINER>-volume
+      volumes:
+        - name: <CONTAINER>-volume
+          persistentVolumeClaim:
+            claimName: <CONTAINER>-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: <ENV>
+  name: <CONTAINER>
+  labels:
+    app: <CONTAINER>
+spec:
+  type: ClusterIP
+  ports:
+    - name: <CONTAINER>
+      protocol: TCP
+      port: 5432
+  selector:
+    run: <CONTAINER>

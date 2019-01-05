@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: exosuite-redis-live
+  namespace: <ENV>
+  name: <CONTAINER>
   labels:
-    app: exosuite-redis-live
+    app: <CONTAINER>
 spec:
   type: ClusterIP
   ports:
@@ -11,28 +12,29 @@ spec:
       protocol: TCP
       port: 6379
   selector:
-    run: exosuite-redis-live
+    run: <CONTAINER>
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exosuite-redis-live
+  namespace: <ENV>
+  name: <CONTAINER>
 spec:
   selector:
     matchLabels:
-      run: exosuite-redis-live
+      run: <CONTAINER>
   replicas: 1
   template:
     metadata:
       labels:
-        run: exosuite-redis-live
+        run: <CONTAINER>
     spec:
       volumes:
-        - name: redis-live-storage
+        - name: <CONTAINER>-storage
           persistentVolumeClaim:
-            claimName: redis-live-claim
+            claimName: <CONTAINER>-claim
       containers:
-        - name: exosuite-redis-live
+        - name: <CONTAINER>
           image: redis:alpine
           ports:
             - containerPort: 6379
@@ -40,12 +42,13 @@ spec:
           args: ["-c", "docker-entrypoint.sh --appendonly yes"]
           volumeMounts:
             - mountPath: "/data"
-              name: redis-live-storage
+              name: <CONTAINER>-storage
 ---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: exosuite-redis-live-volume
+  namespace: <ENV>
+  name: <CONTAINER>-volume
   labels:
     type: local
 spec:
@@ -53,18 +56,19 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteMany
-  storageClassName: manual
+  storageClassName: local-storage
   hostPath:
-    path: "/var/www/exosuite-redis-live"
+    path: "/var/www/<CONTAINER>"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: exosuite-redis-live-claim
+  namespace: <ENV>
+  name: <CONTAINER>-claim
 spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: manual
+  storageClassName: local-storage
   accessModes:
     - ReadWriteMany

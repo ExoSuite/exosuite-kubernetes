@@ -3,18 +3,19 @@
 from lib import *
 
 parser = OptionParser()
-parser.add_option("--version", action="store", dest="version", default=None)
-parser.add_option("--staging", action="store_true", dest="staging")
-parser.add_option("--production", action="store_true", dest="production")
-parser.add_option("--website", action="store_true", dest="website")
-parser.add_option("--api", action='store_true', dest="api")
-parser.add_option("--database", action='store_true', dest="database")
-parser.add_option("--redis", action='store_true', dest="redis")
-parser.add_option("--clean", action='store_true', dest="clean")
+parser.add_option("--version", action="store", dest="version", default=None,
+                  help="Choose which version will be used in generated yaml.")
+parser.add_option("--staging", action="store_true", dest="staging", help="Choose staging for generated yaml.")
+parser.add_option("--production", action="store_true", dest="production", help="Choose production for generated yaml.")
+parser.add_option("--website", action="store_true", dest="website", help="Generate website yaml.")
+parser.add_option("--api", action='store_true', dest="api", help="Generate api yaml.")
+parser.add_option("--databases", action='store_true', dest="databases", help="Generate databases yaml files.")
+parser.add_option("--redis", action='store_true', dest="redis", help="Generate redis yaml files.")
+parser.add_option("--clean", action='store_true', dest="clean", help="Clean all generated files")
 (opts, args) = parser.parse_args()
 
 if opts.clean is None:
-    if opts.redis is None and opts.database is None:
+    if opts.redis is None and opts.databases is None:
         parser.check_required("--version")
     parser.check_required("--staging" if opts.staging is not None else "--production")
     parser.check_required("--production" if opts.production is not None else "--staging")
@@ -66,10 +67,10 @@ def generateDatabaseKubernetesDeployment(container: Container, currentEnv: Env):
 
     dockerFileContent = dockerFileContent \
         .replace(Token.CONTAINER.value, container.value) \
-        .replace(Token.ENV.value, currentEnv.value)\
-        .replace(Token.DATABASE.value, databaseSettings[Token.DATABASE.key()])\
+        .replace(Token.ENV.value, currentEnv.value) \
+        .replace(Token.DATABASE.value, databaseSettings[Token.DATABASE.key()]) \
         .replace(Token.DATABASE_USER.value, databaseSettings[Token.DATABASE_USER.key()]) \
-        .replace(Token.DATABASE_PASSWORD.value, databaseSettings[Token.DATABASE_PASSWORD.key()])\
+        .replace(Token.DATABASE_PASSWORD.value, databaseSettings[Token.DATABASE_PASSWORD.key()]) \
         .replace(Token.IMAGE.value, container.toDatabaseDockerImage())
 
     writeToFile(container, currentEnv, dockerFileContent, Directory.DATABASE)
@@ -91,7 +92,7 @@ elif opts.website:
 elif opts.redis:
     generateRedisKubernetesDeployment(Container.REDIS_LIVE, env)
     generateRedisKubernetesDeployment(Container.REDIS_STORE, env)
-elif opts.database:
+elif opts.databases:
     generateDatabaseKubernetesDeployment(Container.POSTGRES_WEBSITE, env)
     generateDatabaseKubernetesDeployment(Container.POSTGRES_API, env)
 elif opts.clean:

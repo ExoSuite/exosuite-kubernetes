@@ -49,6 +49,10 @@ class DockerImage(Enum):
     POSTGRES = "postgres:11.1-alpine"
 
 
+class SystemCommand(Enum):
+    KUBECTL_APPLY = "kubectl apply -f "
+
+
 class Container(Enum):
     PHP_FPM_API = "exosuite-users-api-php-fpm"
     PHP_FPM_WEBSITE = "exosuite-website-php-fpm"
@@ -61,6 +65,9 @@ class Container(Enum):
 
     def toYaml(self, outputDir: Directory, env: Env = None) -> str:
         return outputDir.toPath(env) + self.value + '.yaml'
+
+    def toKubectlDeployCmd(self, outputDir: Directory, env: Env = None) -> str:
+        return SystemCommand.KUBECTL_APPLY.value + self.toYaml(outputDir, env)
 
     def toRelativeGeneratedFile(self, outputDir: Directory, env: Env = None) -> str:
         directory = outputDir.toPath(env) + self.value + '.yaml'

@@ -95,7 +95,9 @@ elif opts.database:
     generateDatabaseKubernetesDeployment(Container.POSTGRES_WEBSITE, env)
     generateDatabaseKubernetesDeployment(Container.POSTGRES_API, env)
 elif opts.clean:
-    os.system("rm -f ./build/api/* && rm -f ./build/website/*")
+    os.system("find ./build -name '*.yaml' -type f -delete")
+    os.system("find ./database -name '*.yaml' -type f -delete")
+    os.system("find ./redis -name '*.yaml' -type f -delete")
     print("Build directories cleaned!")
 else:
     parser.print_help()

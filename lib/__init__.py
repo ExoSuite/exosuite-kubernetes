@@ -53,6 +53,7 @@ class SystemCommand(Enum):
     KUBECTL_APPLY = "kubectl apply -f "
     LARAVEL_MIGRATE_FRESH = "migrate:fresh --force"
     LARAVEL_MIGRATE = "migrate --force"
+    UPDATE_POSTGIS = "update-postgis.sh"
 
 
 class Container(Enum):
@@ -116,6 +117,7 @@ class Token(Enum):
     DATABASE_USER = "<DATABASE_USER>"
     DATABASE_PASSWORD = "<DATABASE_PASSWORD>"
     MIGRATE_CMD = "<MIGRATE>"
+    SCRIPT = "<SCRIPT>"
 
     def key(self):
         return str(self.value).replace("<", '').replace(">", '')
@@ -164,15 +166,12 @@ class DatabaseSetting:
     PRODUCTION = {
         API: {
             Token.DATABASE.key(): Container.POSTGRES_API.toProjectDirectory(),
-            'DATABASE_PASSWORD': "MAy5UBgd2YVgv8WTzSACQrGSddURGdzfpa9",
+            Token.DATABASE_PASSWORD.key(): "MAy5UBgd2YVgv8WTzSACQrGSddURGdzfpa9",
             Token.DATABASE_USER.key(): "exosuite"
         },
         WEBSITE: {
             Token.DATABASE.key(): Container.POSTGRES_WEBSITE.toProjectDirectory(),
-            'DATABASE_PASSWORD': "4tpaBrVqCqDXct7862VmFAmfrAvjpYuNReqJx7Snqy",
+            Token.DATABASE_PASSWORD.key(): "4tpaBrVqCqDXct7862VmFAmfrAvjpYuNReqJx7Snqy",
             Token.DATABASE_USER.key(): "exosuite"
         }
     }
-
-    def __getitem__(self, item):
-        print(item, "hello")

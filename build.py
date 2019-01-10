@@ -42,11 +42,12 @@ def generateKubernetesDeployment(container: Container, selectedRegistry: Registr
         .replace(Token.ENV.value, str(currentEnv))
 
     if container.isPhpFpm():
+        migrate_cmd = SystemCommand.LARAVEL_MIGRATE_FRESH.value if opts.staging else SystemCommand.LARAVEL_MIGRATE.value
+        migrate_cmd += " --seed"
+
         dockerFileContent = dockerFileContent \
             .replace(Token.DIRECTORY.value, container.toProjectDirectory()) \
-            .replace(Token.MIGRATE_CMD.value,
-                     SystemCommand.LARAVEL_MIGRATE_FRESH.value if opts.staging else SystemCommand.LARAVEL_MIGRATE.value
-                     )
+            .replace(Token.MIGRATE_CMD.value, migrate_cmd)
 
     outputDir = Directory.API if opts.api else Directory.WEBSITE
     writeToFile(container, currentEnv, dockerFileContent, outputDir)

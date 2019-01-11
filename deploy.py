@@ -28,8 +28,12 @@ parser.add_option("--namespaces", action='store_true', dest="namespaces", help="
 parser.add_option("--storage-class", action='store_true', dest="storageclass", help="Deploy local storageclass.")
 parser.add_option("--registries", action="store_true", dest="registries",
                   help="Deploy secret registry for prod and staging.")
+parser.add_option("--init-cluster", action="store_true", dest="init_cluster", help="Init ExoSuite Kubernetes cluster.")
+parser.add_option("--elasticsearch", action="store_true", dest="elastic_search", help="Deploy elasticsearch cluster")
+
+
 (opts, args) = parser.parse_args()
-if opts.namespaces is None and opts.storageclass is None and opts.registries is None:
+if opts.namespaces is None and opts.storageclass is None and opts.registries is None and opts.init_cluster is None:
     parser.check_required("--staging" if opts.staging is not None else "--production")
     parser.check_required("--production" if opts.production is not None else "--staging")
 
@@ -37,6 +41,22 @@ if opts.staging:
     env = Env.STAGING
 else:
     env = Env.PRODUCTION
+
+
+def registries():
+    os.system(
+        createKubectlRegistryCmd(RegistrySecret.STAGING, "dev.exosuite.fr:5000", "exosuite-dev", "N8jSfUeH4kPyYSLW"))
+    os.system(createKubectlRegistryCmd(RegistrySecret.PRODUCTION, "exosuite.fr:5000", "exosuite", "eG4FE5NbknfT79uR"))
+
+
+def namespaces():
+    os.system("kubectl apply -f namespaces/prod.yaml")
+    os.system("kubectl apply -f namespaces/staging.yaml")
+
+
+def storageClasses():
+    os.system("kubectl apply -f StorageClass/local.yaml")
+
 
 if opts.website:
     os.system(Container.PHP_FPM_WEBSITE.toKubectlDeployCmd(Directory.WEBSITE, env))
@@ -52,14 +72,18 @@ elif opts.redis:
 elif opts.databases:
     os.system(Container.POSTGRES_API.toKubectlDeployCmd(Directory.DATABASE, env))
     os.system(Container.POSTGRES_WEBSITE.toKubectlDeployCmd(Directory.DATABASE, env))
+elif opts.elastic_search:
+    os.system(Container.ELASTICSEARCH.toKubectlDeployCmd(Directory.ELASTICSEARCH, env))
 elif opts.registries:
-    os.system(
-        createKubectlRegistryCmd(RegistrySecret.STAGING, "dev.exosuite.fr:5000", "exosuite-dev", "N8jSfUeH4kPyYSLW"))
-    os.system(createKubectlRegistryCmd(RegistrySecret.PRODUCTION, "exosuite.fr:5000", "exosuite", "eG4FE5NbknfT79uR"))
+    registries()
 elif opts.namespaces:
-    os.system("kubectl apply -f namespaces/prod.yaml")
-    os.system("kubectl apply -f namespaces/staging.yaml")
+    namespaces()
 elif opts.storageclass:
-    os.system("kubectl apply -f StorageClass/local.yaml")
+    storageClasses()
+elif opts.init_cluster:
+    os.system("kubectl taint nodes --all node-role.kubernetes.io/master-")
+    storageClasses()
+    namespaces()
+    registries()
 else:
     parser.print_help()

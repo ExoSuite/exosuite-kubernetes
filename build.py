@@ -48,6 +48,11 @@ def generateKubernetesDeployment(container: Container, selectedRegistry: Registr
             .replace(Token.DIRECTORY.value, container.toProjectDirectory()) \
             .replace(Token.MIGRATE_CMD.value, migrate_cmd)
 
+        if container == Container.PHP_FPM_API:
+            dockerFileContent = dockerFileContent.replace(Token.SCRIPT.value, "php artisan elastic:create-indexes")
+        else:
+            dockerFileContent = dockerFileContent.replace(Token.SCRIPT.value, "echo 'SUCCESS'")
+
     outputDir = Directory.API if opts.api else Directory.WEBSITE
     writeToFile(container, currentEnv, dockerFileContent, outputDir)
 
@@ -91,15 +96,19 @@ if opts.api:
     generateKubernetesDeployment(Container.PHP_FPM_API, registry, env, Template.PHP_FPM)
     generateKubernetesDeployment(Container.HORIZON, registry, env, Template.ARTISAN)
     generateKubernetesDeployment(Container.SCHEDULER, registry, env, Template.ARTISAN)
+    print("Deploy cmd: \n\tpython3 deploy.py --api --" + env.value)
 elif opts.website:
     generateKubernetesDeployment(Container.NGINX_WEBSITE, registry, env, Template.PHP_FPM)
     generateKubernetesDeployment(Container.PHP_FPM_WEBSITE, registry, env, Template.NGINX)
+    print("Deploy cmd: \n\tpython3 deploy.py --website --" + env.value)
 elif opts.redis:
     generateRedisKubernetesDeployment(Container.REDIS_LIVE, env)
     generateRedisKubernetesDeployment(Container.REDIS_STORE, env)
+    print("Deploy cmd: \n\tpython3 deploy.py --redis --" + env.value)
 elif opts.databases:
     generateDatabaseKubernetesDeployment(Container.POSTGRES_WEBSITE, env)
     generateDatabaseKubernetesDeployment(Container.POSTGRES_API, env)
+    print("Deploy: \n\tpython3 deploy.py --databases --" + env.value)
 elif opts.clean:
     os.system("find ./build -name '*.yaml' -type f -delete")
     os.system("find ./database -name '*.yaml' -type f -delete")

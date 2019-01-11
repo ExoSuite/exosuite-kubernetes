@@ -6,7 +6,7 @@ metadata:
   labels:
     app: <CONTAINER>
 spec:
-  type: ClusterIP
+  clusterIP: None
   ports:
     - name: php-fpm
       protocol: TCP
@@ -48,7 +48,8 @@ spec:
                   "php /var/www/<DIRECTORY>/artisan config:cache \
                   && php /var/www/<DIRECTORY>/artisan route:cache \
                   && php /var/www/<DIRECTORY>/artisan view:cache \
-                  && php /var/www/<DIRECTORY>/artisan <MIGRATE>
+                  && php /var/www/<DIRECTORY>/artisan <MIGRATE> \
+                  && <SCRIPT>
                   "
                 ]
       imagePullSecrets:

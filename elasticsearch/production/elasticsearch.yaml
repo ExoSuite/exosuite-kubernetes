@@ -1,17 +1,19 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: production
   name: exosuite-elasticsearch
   labels:
-    service: exosuite-elasticsearch
+    app: exosuite-elasticsearch
 spec:
+  clusterIP: None
   ports:
     - port: 9200
       name: serving
     - port: 9300
       name: node-to-node
   selector:
-    service: exosuite-elasticsearch
+    app: exosuite-elasticsearch
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -23,11 +25,11 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      service: exosuite-elasticsearch
+      app: exosuite-elasticsearch
   template:
     metadata:
       labels:
-        service: exosuite-elasticsearch
+        app: exosuite-elasticsearch
     spec:
       terminationGracePeriodSeconds: 300
       initContainers:
@@ -70,7 +72,7 @@ spec:
             - name: TAKE_FILE_OWNERSHIP
               value: "1"
             - name: cluster.name
-              value: exosuite-elasticsearch-cluster
+              value: exosuite-elasticsearch
             - name: node.name
               valueFrom:
                 fieldRef:

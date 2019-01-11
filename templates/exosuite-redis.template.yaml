@@ -55,7 +55,7 @@ spec:
   capacity:
     storage: 10Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: local-storage
   hostPath:
     path: "/var/www/<CONTAINER>"
@@ -71,4 +71,4 @@ spec:
       storage: 10Gi
   storageClassName: local-storage
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce

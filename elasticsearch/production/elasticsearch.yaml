@@ -1,0 +1,122 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: exosuite-elasticsearch
+  labels:
+    service: exosuite-elasticsearch
+spec:
+  ports:
+    - port: 9200
+      name: serving
+    - port: 9300
+      name: node-to-node
+  selector:
+    service: exosuite-elasticsearch
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: production
+  name: exosuite-elasticsearch
+spec:
+  serviceName: "exosuite-elasticsearch"
+  replicas: 2
+  selector:
+    matchLabels:
+      service: exosuite-elasticsearch
+  template:
+    metadata:
+      labels:
+        service: exosuite-elasticsearch
+    spec:
+      terminationGracePeriodSeconds: 300
+      initContainers:
+        # NOTE:
+        # To increase the default vm.max_map_count to 262144
+        # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode
+        - name: increase-the-vm-max-map-count
+          image: busybox
+          command:
+            - sysctl
+            - -w
+            - vm.max_map_count=262144
+          securityContext:
+            privileged: true
+        # To increase the ulimit
+        # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_notes_for_production_use_and_defaults
+        - name: increase-the-ulimit
+          image: busybox
+          command:
+            - sh
+            - -c
+            - ulimit -n 65536
+          securityContext:
+            privileged: true
+      containers:
+        - name: exosuite-elasticsearch
+          image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.5.4
+          ports:
+            - containerPort: 9200
+              name: http
+            - containerPort: 9300
+              name: tcp
+          # NOTE: you can increase this resources
+          resources:
+            requests:
+              memory: 4Gi
+            limits:
+              memory: 8Gi
+          env:
+            - name: TAKE_FILE_OWNERSHIP
+              value: "1"
+            - name: cluster.name
+              value: exosuite-elasticsearch-cluster
+            - name: node.name
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            # NOTE: This will tell the elasticsearch node where to connect to other nodes to form a cluster
+            - name: discovery.zen.ping.unicast.hosts
+              value: "exosuite-elasticsearch-0.exosuite-elasticsearch.production.svc.cluster.local,exosuite-elasticsearch-1.exosuite-elasticsearch.production.svc.cluster.local"
+            # NOTE: You can increase the heap size
+            - name: ES_JAVA_OPTS
+              value: -Xms4g -Xmx4g
+          volumeMounts:
+            - name: exosuite-elasticsearch-volume
+              mountPath: /usr/share/elasticsearch/data
+      volumes:
+        - name: exosuite-elasticsearch-volume
+          persistentVolumeClaim:
+            claimName: exosuite-elasticsearch-claim
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: production
+  name: exosuite-elasticsearch-volume
+  labels:
+    type: local
+    app: exosuite-elasticsearch
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/exosuite-elasticsearch"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: production
+  name: exosuite-elasticsearch-claim
+  labels:
+    app: exosuite-elasticsearch
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

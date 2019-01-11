@@ -23,7 +23,7 @@ spec:
   capacity:
     storage: 10Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   hostPath:
     path: "/mnt/data/<CONTAINER>"
 ---
@@ -37,7 +37,7 @@ metadata:
 spec:
   storageClassName: local-storage
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi

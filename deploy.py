@@ -44,6 +44,8 @@ if opts.website:
 elif opts.api:
     os.system(Container.PHP_FPM_API.toKubectlDeployCmd(Directory.API, env))
     os.system(Container.NGINX_API.toKubectlDeployCmd(Directory.API, env))
+    os.system(Container.HORIZON.toKubectlDeployCmd(Directory.API, env))
+    os.system(Container.SCHEDULER.toKubectlDeployCmd(Directory.API, env))
 elif opts.redis:
     os.system(Container.REDIS_LIVE.toKubectlDeployCmd(Directory.REDIS, env))
     os.system(Container.REDIS_STORE.toKubectlDeployCmd(Directory.REDIS, env))
@@ -51,7 +53,8 @@ elif opts.databases:
     os.system(Container.POSTGRES_API.toKubectlDeployCmd(Directory.DATABASE, env))
     os.system(Container.POSTGRES_WEBSITE.toKubectlDeployCmd(Directory.DATABASE, env))
 elif opts.registries:
-    os.system(createKubectlRegistryCmd(RegistrySecret.STAGING, "dev.exosuite.fr:5000", "exosuite-dev", "N8jSfUeH4kPyYSLW"))
+    os.system(
+        createKubectlRegistryCmd(RegistrySecret.STAGING, "dev.exosuite.fr:5000", "exosuite-dev", "N8jSfUeH4kPyYSLW"))
     os.system(createKubectlRegistryCmd(RegistrySecret.PRODUCTION, "exosuite.fr:5000", "exosuite", "eG4FE5NbknfT79uR"))
 elif opts.namespaces:
     os.system("kubectl apply -f namespaces/prod.yaml")

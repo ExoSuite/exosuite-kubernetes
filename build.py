@@ -28,8 +28,7 @@ def writeToFile(container: Container, currentEnv: Env, dockerFileContent: str, o
     print("Generated " + container.toRelativeGeneratedFile(outputDir, currentEnv))
 
 
-def generateKubernetesDeployment(container: Container, selectedRegistry: Registry, currentEnv: Env):
-    template = Template.PHP_FPM if container.isPhpFpm() else Template.NGINX
+def generateKubernetesDeployment(container: Container, selectedRegistry: Registry, currentEnv: Env, template: Template):
     dockerFileContent = open(template.toPath()).read()
 
     registrySecret = selectedRegistry.toRegistrySecret()
@@ -67,7 +66,6 @@ def generateRedisKubernetesDeployment(container: Container, currentEnv: Env):
 def generateDatabaseKubernetesDeployment(container: Container, currentEnv: Env):
     template = Template.POSTGRES
     dockerFileContent = open(template.toPath()).read()
-
     databaseSettings = container.toDatabaseSettings(currentEnv)
 
     dockerFileContent = dockerFileContent \
@@ -89,11 +87,13 @@ else:
     registry = Registry.PRODUCTION
 
 if opts.api:
-    generateKubernetesDeployment(Container.NGINX_API, registry, env)
-    generateKubernetesDeployment(Container.PHP_FPM_API, registry, env)
+    generateKubernetesDeployment(Container.NGINX_API, registry, env, Template.NGINX)
+    generateKubernetesDeployment(Container.PHP_FPM_API, registry, env, Template.PHP_FPM)
+    generateKubernetesDeployment(Container.HORIZON, registry, env, Template.ARTISAN)
+    generateKubernetesDeployment(Container.SCHEDULER, registry, env, Template.ARTISAN)
 elif opts.website:
-    generateKubernetesDeployment(Container.NGINX_WEBSITE, registry, env)
-    generateKubernetesDeployment(Container.PHP_FPM_WEBSITE, registry, env)
+    generateKubernetesDeployment(Container.NGINX_WEBSITE, registry, env, Template.PHP_FPM)
+    generateKubernetesDeployment(Container.PHP_FPM_WEBSITE, registry, env, Template.NGINX)
 elif opts.redis:
     generateRedisKubernetesDeployment(Container.REDIS_LIVE, env)
     generateRedisKubernetesDeployment(Container.REDIS_STORE, env)

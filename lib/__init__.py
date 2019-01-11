@@ -23,8 +23,8 @@ class Env(Enum):
 
 
 class Directory(Enum):
-    API = "build/api"
-    WEBSITE = "build/website"
+    API = "api"
+    WEBSITE = "website"
     TEMPLATES = "templates"
     REDIS = "redis"
     DATABASE = "database"
@@ -65,6 +65,8 @@ class Container(Enum):
     REDIS_STORE = "exosuite-redis-store"
     POSTGRES_WEBSITE = "exosuite-website-postgres"
     POSTGRES_API = "exosuite-users-api-postgres"
+    HORIZON = "exosuite-laravel-horizon"
+    SCHEDULER = "exosuite-scheduler"
 
     def toYaml(self, outputDir: Directory, env: Env = None) -> str:
         return outputDir.toPath(env) + self.value + '.yaml'
@@ -101,8 +103,8 @@ class Container(Enum):
 
     def toDatabaseDockerImage(self) -> str:
         if str(self.value).find("api") > 0:
-            return str(DockerImage.POSTGIS.value)
-        return str(DockerImage.POSTGRES.value)
+            return str(DockerImage.POSTGIS)
+        return str(DockerImage.POSTGRES)
 
 
 class Token(Enum):
@@ -128,6 +130,7 @@ class Template(Enum):
     NGINX = "exosuite-nginx.template.yaml"
     REDIS = "exosuite-redis.template.yaml"
     POSTGRES = "exosuite-postgres.template.yaml"
+    ARTISAN = "exosuite-artisan.template.yaml"
 
     def toPath(self):
         return Directory.TEMPLATES.toPath() + self.value

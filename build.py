@@ -84,7 +84,7 @@ def generateDatabaseKubernetesDeployment(container: Container, currentEnv: Env):
     writeToFile(container, currentEnv, dockerFileContent, Directory.DATABASE)
 
 
-env: Env = Env.STAGING if opts.staging else Env.PRODUCTION
+env = Env.STAGING if opts.staging else Env.PRODUCTION
 
 if env == Env.STAGING:
     registry = Registry.STAGING
@@ -98,8 +98,8 @@ if opts.api:
     generateKubernetesDeployment(Container.SCHEDULER, registry, env, Template.ARTISAN)
     print("Deploy cmd: \n\tpython3 deploy.py --api --" + env.value)
 elif opts.website:
-    generateKubernetesDeployment(Container.NGINX_WEBSITE, registry, env, Template.PHP_FPM)
-    generateKubernetesDeployment(Container.PHP_FPM_WEBSITE, registry, env, Template.NGINX)
+    generateKubernetesDeployment(Container.NGINX_WEBSITE, registry, env, Template.NGINX)
+    generateKubernetesDeployment(Container.PHP_FPM_WEBSITE, registry, env, Template.PHP_FPM)
     print("Deploy cmd: \n\tpython3 deploy.py --website --" + env.value)
 elif opts.redis:
     generateRedisKubernetesDeployment(Container.REDIS_LIVE, env)

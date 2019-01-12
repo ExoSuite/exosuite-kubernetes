@@ -39,5 +39,21 @@ spec:
           image: <REGISTRY>/<CONTAINER>:<VERSION>
           ports:
             - containerPort: 443
+
+          livenessProbe:
+            httpGet:
+              path: /monitoring/alive
+              port: 443
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /monitoring/alive
+              port: 443
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 15
+
       imagePullSecrets:
         - name: <REGISTRY_SECRET>

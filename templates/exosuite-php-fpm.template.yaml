@@ -39,6 +39,20 @@ spec:
           image: <REGISTRY>/<CONTAINER>:<VERSION>
           ports:
             - containerPort: 9000
+          readinessProbe:
+            exec:
+              command:
+                - php-fpm-healthcheck # a simple ping since this means it's ready to handle traffic
+            initialDelaySeconds: 1
+            periodSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+                - php-fpm-healthcheck
+                - --listen-queue-len=10 # fails if there are more than 10 processes waiting in the fpm queue
+            initialDelaySeconds: 0
+            periodSeconds: 10
+
           lifecycle:
             postStart:
               exec:
@@ -52,5 +66,6 @@ spec:
                   && <SCRIPT>
                   "
                 ]
+
       imagePullSecrets:
         - name: <REGISTRY_SECRET>

@@ -42,6 +42,7 @@ spec:
 
           livenessProbe:
             httpGet:
+              scheme: https
               path: /monitoring/alive
               port: 443
             initialDelaySeconds: 15
@@ -49,6 +50,7 @@ spec:
             periodSeconds: 15
           readinessProbe:
             httpGet:
+              scheme: https
               path: /monitoring/alive
               port: 443
             initialDelaySeconds: 5

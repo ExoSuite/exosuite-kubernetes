@@ -33,3 +33,5 @@ spec:
           ports:
             - containerPort: 6001
               name: echo-server
+      imagePullSecrets:
+        - name: production-registry

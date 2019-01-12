@@ -30,7 +30,7 @@ parser.add_option("--registries", action="store_true", dest="registries",
                   help="Deploy secret registry for prod and staging.")
 parser.add_option("--init-cluster", action="store_true", dest="init_cluster", help="Init ExoSuite Kubernetes cluster.")
 parser.add_option("--elasticsearch", action="store_true", dest="elastic_search", help="Deploy elasticsearch cluster.")
-parser.add_option("--laravel_echo", action="store_true", dest="laravel_echo", help="Deploy laravel-echo-server.")
+parser.add_option("--laravel-echo", action="store_true", dest="laravel_echo", help="Deploy laravel-echo-server.")
 
 (opts, args) = parser.parse_args()
 if opts.namespaces is None and opts.storageclass is None and opts.registries is None and opts.init_cluster is None:

@@ -43,6 +43,8 @@ spec:
           volumeMounts:
             - mountPath: "/data"
               name: <CONTAINER>-storage
+      nodeSelector:
+        type: <NODE>
 ---
 kind: PersistentVolume
 apiVersion: v1

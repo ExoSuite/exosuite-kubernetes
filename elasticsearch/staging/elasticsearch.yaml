@@ -90,6 +90,8 @@ spec:
         - name: exosuite-elasticsearch-volume
           persistentVolumeClaim:
             claimName: exosuite-elasticsearch-claim
+      nodeSelector:
+        type: staging
 ---
 kind: PersistentVolume
 apiVersion: v1

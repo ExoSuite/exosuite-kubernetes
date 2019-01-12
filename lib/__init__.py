@@ -124,6 +124,7 @@ class Token(Enum):
     DATABASE_PASSWORD = "<DATABASE_PASSWORD>"
     MIGRATE_CMD = "<MIGRATE>"
     SCRIPT = "<SCRIPT>"
+    NODE = "<NODE>"
 
     def key(self):
         return str(self.value).replace("<", '').replace(">", '')

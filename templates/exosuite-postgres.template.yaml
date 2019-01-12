@@ -78,6 +78,8 @@ spec:
         - name: <CONTAINER>-volume
           persistentVolumeClaim:
             claimName: <CONTAINER>-claim
+      nodeSelector:
+        type: <NODE>
 ---
 apiVersion: v1
 kind: Service

@@ -29,6 +29,7 @@ class Directory(Enum):
     REDIS = "redis"
     DATABASE = "database"
     ELASTICSEARCH = "elasticsearch"
+    LARAVEL_ECHO = "laravel-echo-server"
 
     def toPath(self, env: Env = None):
         path = os.path.dirname(os.path.realpath(__file__))
@@ -69,6 +70,7 @@ class Container(Enum):
     HORIZON = "exosuite-laravel-horizon"
     SCHEDULER = "exosuite-scheduler"
     ELASTICSEARCH = "elasticsearch"
+    LARAVEL_ECHO = "server"
 
     def toYaml(self, outputDir: Directory, env: Env = None) -> str:
         return outputDir.toPath(env) + self.value + '.yaml'

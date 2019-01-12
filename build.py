@@ -84,7 +84,7 @@ def generateDatabaseKubernetesDeployment(container: Container, currentEnv: Env):
     writeToFile(container, currentEnv, dockerFileContent, Directory.DATABASE)
 
 
-env = Env.STAGING if opts.staging else Env.PRODUCTION
+env: Env = Env.STAGING if opts.staging else Env.PRODUCTION
 
 if env == Env.STAGING:
     registry = Registry.STAGING

@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: staging
+  name: exosuite-laravel-echo-server
+  labels:
+    app: exosuite-laravel-echo-server
+spec:
+  ports:
+    - port: 6001
+      name: echo-server
+  selector:
+    app: exosuite-laravel-echo-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: staging
+  name: exosuite-laravel-echo-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exosuite-laravel-echo-server
+  template:
+    metadata:
+      labels:
+        app: exosuite-laravel-echo-server
+    spec:
+      containers:
+        - name: exosuite-laravel-echo-server
+          image: dev.exosuite.fr:5000/exosuite/exosuite-laravel-echo-server:1.1
+          ports:
+            - containerPort: 6001
+              name: echo-server

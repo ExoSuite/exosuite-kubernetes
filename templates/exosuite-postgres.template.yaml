@@ -87,7 +87,6 @@ metadata:
   labels:
     app: <CONTAINER>
 spec:
-  clusterIP: None
   ports:
     - name: <CONTAINER>
       protocol: TCP

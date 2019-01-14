@@ -59,10 +59,11 @@ spec:
                 command: [
                   "/bin/sh",
                   "-c",
-                  "php /var/www/<DIRECTORY>/artisan config:cache \
-                  && php /var/www/<DIRECTORY>/artisan route:cache \
-                  && php /var/www/<DIRECTORY>/artisan view:cache \
-                  && php /var/www/<DIRECTORY>/artisan <MIGRATE> \
+                  "rm bootstrap/cache/*.php && php artisan optimize:clear \
+                  && php artisan package:discover && php artisan config:cache \
+                  && php artisan route:cache \
+                  && php artisan view:cache \
+                  && php artisan <MIGRATE> \
                   && <SCRIPT>
                   "
                 ]

@@ -25,7 +25,7 @@ spec:
             postStart:
               exec:
                 command: [
-                  "sh /usr/local/bin/init"
+                  "/usr/local/bin/init"
                 ]
       imagePullSecrets:
         - name: <REGISTRY_SECRET>

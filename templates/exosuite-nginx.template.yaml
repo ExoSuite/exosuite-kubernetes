@@ -40,6 +40,13 @@ spec:
           ports:
             - containerPort: 443
 
+          lifecycle:
+            postStart:
+              exec:
+                command: [
+                  "/usr/local/bin/init"
+                ]
+
           livenessProbe:
             httpGet:
               scheme: HTTPS

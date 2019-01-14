@@ -57,15 +57,7 @@ spec:
             postStart:
               exec:
                 command: [
-                  "/bin/sh",
-                  "-c",
-                  "rm bootstrap/cache/*.php && php artisan optimize:clear \
-                  && php artisan package:discover && php artisan config:cache \
-                  && php artisan route:cache \
-                  && php artisan view:cache \
-                  && php artisan <MIGRATE> \
-                  && <SCRIPT>
-                  "
+                  "/usr/local/bin/init <MIGRATE> <SCRIPT>"
                 ]
 
       imagePullSecrets:

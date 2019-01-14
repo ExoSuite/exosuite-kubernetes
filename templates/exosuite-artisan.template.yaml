@@ -21,5 +21,16 @@ spec:
       containers:
         - name: <CONTAINER>
           image: <REGISTRY>/<CONTAINER>:<VERSION>
+          lifecycle:
+            postStart:
+              exec:
+                command: [
+                  "/bin/sh",
+                  "-c",
+                  "rm bootstrap/cache/*.php && php artisan optimize:clear \
+                  && php artisan package:discover && php artisan config:cache \
+                  && php artisan route:cache \
+                  && php artisan view:cache"
+                ]
       imagePullSecrets:
         - name: <REGISTRY_SECRET>

@@ -44,7 +44,7 @@ spec:
             postStart:
               exec:
                 command: [
-                  "/usr/local/bin/init"
+                  "sh /usr/local/bin/init"
                 ]
 
           livenessProbe:

@@ -57,7 +57,7 @@ spec:
             postStart:
               exec:
                 command: [
-                  "/usr/local/bin/init <MIGRATE> <SCRIPT>"
+                  "sh /usr/local/bin/init <MIGRATE> <SCRIPT>"
                 ]
 
       imagePullSecrets:

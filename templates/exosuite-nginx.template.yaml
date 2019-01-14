@@ -46,14 +46,16 @@ spec:
               path: /monitoring/alive
               port: 443
             initialDelaySeconds: 15
-            timeoutSeconds: 1
-            periodSeconds: 15
+            failureThreshold: 3
+            periodSeconds: 3
           readinessProbe:
             httpGet:
               scheme: HTTPS
               path: /monitoring/alive
               port: 443
-            initialDelaySeconds: 5
+            initialDelaySeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
             timeoutSeconds: 1
             periodSeconds: 15
 

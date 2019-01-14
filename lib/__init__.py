@@ -53,8 +53,8 @@ class DockerImage(Enum):
 
 class SystemCommand(Enum):
     KUBECTL_APPLY = "kubectl apply -f "
-    LARAVEL_MIGRATE_FRESH = "migrate:fresh --force"
-    LARAVEL_MIGRATE = "migrate --force"
+    LARAVEL_MIGRATE_FRESH = "'migrate:fresh --force'"
+    LARAVEL_MIGRATE = "'migrate --force'"
     UPDATE_POSTGIS = "update-postgis.sh"
 
 

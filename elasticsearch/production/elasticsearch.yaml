@@ -65,7 +65,7 @@ spec:
           # NOTE: you can increase this resources
           resources:
             requests:
-              memory: 4Gi
+              memory: 6Gi
             limits:
               memory: 8Gi
           env:
@@ -84,14 +84,21 @@ spec:
             - name: ES_JAVA_OPTS
               value: -Xms4g -Xmx4g
           volumeMounts:
-            - name: exosuite-elasticsearch-volume-prod
+            - name: data
               mountPath: /usr/share/elasticsearch/data
-      volumes:
-        - name: exosuite-elasticsearch-volume-prod
-          persistentVolumeClaim:
-            claimName: exosuite-elasticsearch-claim
       nodeSelector:
         type: production
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: local-storage
+        # NOTE: You can increase the storage size
+        resources:
+          requests:
+            storage: 50Gi
 ---
 kind: PersistentVolume
 apiVersion: v1
@@ -109,18 +116,3 @@ spec:
     - ReadWriteMany
   hostPath:
     path: "/mnt/data/exosuite-elasticsearch"
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  namespace: production
-  name: exosuite-elasticsearch-claim
-  labels:
-    app: exosuite-elasticsearch
-spec:
-  storageClassName: local-storage
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10Gi

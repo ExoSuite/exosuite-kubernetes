@@ -116,8 +116,8 @@ metadata:
 spec:
   storageClassName: local-storage
   capacity:
-    storage: 50Gi
+    storage: 500Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   hostPath:
     path: "/mnt/data/exosuite-elasticsearch"

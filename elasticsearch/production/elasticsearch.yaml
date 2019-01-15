@@ -109,6 +109,17 @@ metadata:
   labels:
     type: local
     app: exosuite-elasticsearch
+  annotations:
+    "volume.alpha.kubernetes.io/node-affinity": '{
+         "requiredDuringSchedulingIgnoredDuringExecution": {
+           "nodeSelectorTerms": [
+             { "matchExpressions": [
+                 { "key": "kubernetes.io/hostname",
+                   "operator": "In",
+                   "values": ["mail.exosuite.fr"]
+                 }
+             ]}
+           ]}}'
 spec:
   capacity:
     storage: 50Gi
@@ -126,6 +137,17 @@ metadata:
   labels:
     type: local
     app: exosuite-elasticsearch
+  annotations:
+    "volume.alpha.kubernetes.io/node-affinity": '{
+       "requiredDuringSchedulingIgnoredDuringExecution": {
+         "nodeSelectorTerms": [
+           { "matchExpressions": [
+               { "key": "kubernetes.io/hostname",
+                 "operator": "In",
+                 "values": ["mail.exosuite.fr"]
+               }
+           ]}
+         ]}}'
 spec:
   capacity:
     storage: 50Gi

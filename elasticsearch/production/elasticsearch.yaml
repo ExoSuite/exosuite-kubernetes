@@ -106,6 +106,9 @@ kind: PersistentVolume
 metadata:
   namespace: production
   name: exosuite-elasticsearch-vol-0
+  labels:
+    type: local
+    app: exosuite-elasticsearch
 spec:
   capacity:
     storage: 50Gi
@@ -120,6 +123,9 @@ kind: PersistentVolume
 metadata:
   namespace: production
   name: exosuite-elasticsearch-vol-1
+  labels:
+    type: local
+    app: exosuite-elasticsearch
 spec:
   capacity:
     storage: 50Gi

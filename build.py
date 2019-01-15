@@ -67,6 +67,9 @@ def generateRedisKubernetesDeployment(container: Container, currentEnv: Env):
         .replace(Token.ENV.value, currentEnv.value) \
         .replace(Token.NODE.value, currentEnv.value)
 
+    if env == Env.PRODUCTION:
+        dockerFileContent = dockerFileContent.replace("-volume", "-volume-prod")
+
     writeToFile(container, currentEnv, dockerFileContent, Directory.REDIS)
 
 
@@ -83,6 +86,9 @@ def generateDatabaseKubernetesDeployment(container: Container, currentEnv: Env):
         .replace(Token.DATABASE_PASSWORD.value, databaseSettings[Token.DATABASE_PASSWORD.key()]) \
         .replace(Token.IMAGE.value, container.toDatabaseDockerImage()) \
         .replace(Token.NODE.value, currentEnv.value)
+
+    if env == Env.PRODUCTION:
+        dockerFileContent = dockerFileContent.replace("-volume", "-volume-prod")
 
     writeToFile(container, currentEnv, dockerFileContent, Directory.DATABASE)
 

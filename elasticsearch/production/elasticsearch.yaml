@@ -84,10 +84,10 @@ spec:
             - name: ES_JAVA_OPTS
               value: -Xms4g -Xmx4g
           volumeMounts:
-            - name: exosuite-elasticsearch-volume
+            - name: exosuite-elasticsearch-volume-prod
               mountPath: /usr/share/elasticsearch/data
       volumes:
-        - name: exosuite-elasticsearch-volume
+        - name: exosuite-elasticsearch-volume-prod
           persistentVolumeClaim:
             claimName: exosuite-elasticsearch-claim
       nodeSelector:
@@ -97,14 +97,14 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   namespace: production
-  name: exosuite-elasticsearch-volume
+  name: exosuite-elasticsearch-volume-prod
   labels:
     type: local
     app: exosuite-elasticsearch
 spec:
   storageClassName: local-storage
   capacity:
-    storage: 10Gi
+    storage: 50Gi
   accessModes:
     - ReadWriteOnce
   hostPath:

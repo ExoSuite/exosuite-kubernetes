@@ -86,6 +86,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /usr/share/elasticsearch/data
+      volumes:
+        - name: exosuite-elasticsearch-volume-prod
       nodeSelector:
         type: production
   volumeClaimTemplates:

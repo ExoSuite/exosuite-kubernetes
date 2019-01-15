@@ -79,7 +79,7 @@ spec:
                   fieldPath: metadata.name
             # NOTE: This will tell the elasticsearch node where to connect to other nodes to form a cluster
             - name: discovery.zen.ping.unicast.hosts
-              value: "exosuite-elasticsearch-0.exosuite-elasticsearch.staging.svc.cluster.local,exosuite-elasticsearch-1.exosuite-elasticsearch.staging.svc.cluster.local"
+              value: "exosuite-elasticsearch-0.exosuite-elasticsearch.staging.svc.cluster.local"
             # NOTE: You can increase the heap size
             - name: ES_JAVA_OPTS
               value: -Xms4g -Xmx4g

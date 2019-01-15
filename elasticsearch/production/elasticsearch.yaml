@@ -6,7 +6,7 @@ metadata:
   labels:
     app: exosuite-elasticsearch
 spec:
-  clusterIP: None
+  type: ClusterIP
   ports:
     - port: 9200
       name: serving
@@ -21,8 +21,8 @@ metadata:
   namespace: production
   name: exosuite-elasticsearch
 spec:
-  serviceName: "exosuite-elasticsearch"
-  replicas: 2
+  serviceName: exosuite-elasticsearch
+  replicas: 1
   selector:
     matchLabels:
       app: exosuite-elasticsearch
@@ -65,7 +65,7 @@ spec:
           # NOTE: you can increase this resources
           resources:
             requests:
-              memory: 6Gi
+              memory: 4Gi
             limits:
               memory: 8Gi
           env:
@@ -79,33 +79,25 @@ spec:
                   fieldPath: metadata.name
             # NOTE: This will tell the elasticsearch node where to connect to other nodes to form a cluster
             - name: discovery.zen.ping.unicast.hosts
-              value: "exosuite-elasticsearch-0.exosuite-elasticsearch.production.svc.cluster.local,exosuite-elasticsearch-1.exosuite-elasticsearch.production.svc.cluster.local"
+              value: "exosuite-elasticsearch-0.exosuite-elasticsearch.production.svc.cluster.local"
             # NOTE: You can increase the heap size
             - name: ES_JAVA_OPTS
               value: -Xms4g -Xmx4g
           volumeMounts:
-            - name: data
+            - name: exosuite-elasticsearch-volume-prod
               mountPath: /usr/share/elasticsearch/data
+      volumes:
+        - name: exosuite-elasticsearch-volume-prod
+          persistentVolumeClaim:
+            claimName: exosuite-elasticsearch-claim
       nodeSelector:
         type: production
-
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: local-storage
-        # NOTE: You can increase the storage size
-        resources:
-          requests:
-            storage: 50Gi
 ---
-apiVersion: v1
 kind: PersistentVolume
+apiVersion: v1
 metadata:
   namespace: production
-  name: exosuite-elasticsearch-vol-0
+  name: exosuite-elasticsearch-volume-prod
   labels:
     type: local
     app: exosuite-elasticsearch
@@ -118,35 +110,25 @@ spec:
               operator: In
               values:
                 - mail.exosuite.fr
+  storageClassName: local-storage
   capacity:
     storage: 50Gi
   accessModes:
-  - ReadWriteOnce
-  storageClassName: local-storage
-  local:
-    path: /mnt/data
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/exosuite-elasticsearch"
 ---
+kind: PersistentVolumeClaim
 apiVersion: v1
-kind: PersistentVolume
 metadata:
   namespace: production
-  name: exosuite-elasticsearch-vol-1
+  name: exosuite-elasticsearch-claim
   labels:
-    type: local
     app: exosuite-elasticsearch
 spec:
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - mail.exosuite.fr
-  capacity:
-    storage: 50Gi
-  accessModes:
-  - ReadWriteOnce
   storageClassName: local-storage
-  local:
-    path: /mnt/data
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi

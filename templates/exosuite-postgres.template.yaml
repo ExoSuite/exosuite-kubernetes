@@ -21,7 +21,7 @@ metadata:
 spec:
   storageClassName: local-storage
   capacity:
-    storage: 10Gi
+    storage: <STORAGE>
   accessModes:
     - ReadWriteOnce
   hostPath:
@@ -40,7 +40,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: <STORAGE>
 ---
 apiVersion: apps/v1
 kind: Deployment

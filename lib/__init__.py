@@ -125,6 +125,7 @@ class Token(Enum):
     MIGRATE_CMD = "<MIGRATE>"
     SCRIPT = "<SCRIPT>"
     NODE = "<NODE>"
+    STORAGE = "<STORAGE>"
 
     def key(self):
         return str(self.value).replace("<", '').replace(">", '')

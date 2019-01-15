@@ -86,10 +86,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /usr/share/elasticsearch/data
-      volumes:
-        - name: exosuite-elasticsearch-volume-prod
-          persistentVolumeClaim:
-            claimName: exosuite-elasticsearch-volume-prod
       nodeSelector:
         type: production
 
@@ -109,7 +105,7 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   namespace: production
-  name: exosuite-elasticsearch-volume-prod
+  name: exosuite-elasticsearch-vol-0
   labels:
     type: local
     app: exosuite-elasticsearch
@@ -120,4 +116,21 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: "/mnt/data/exosuite-elasticsearch"
+    path: /mnt/data
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: production
+  name: exosuite-elasticsearch-vol-1
+  labels:
+    type: local
+    app: exosuite-elasticsearch
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /mnt/data

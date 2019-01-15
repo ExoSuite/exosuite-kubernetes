@@ -88,8 +88,11 @@ spec:
               mountPath: /usr/share/elasticsearch/data
       volumes:
         - name: exosuite-elasticsearch-volume-prod
+          persistentVolumeClaim:
+            claimName: exosuite-elasticsearch-volume-prod
       nodeSelector:
         type: production
+
   volumeClaimTemplates:
     - metadata:
         name: data
@@ -97,7 +100,6 @@ spec:
         accessModes:
           - ReadWriteOnce
         storageClassName: local-storage
-        volumeName: exosuite-elasticsearch-volume-prod
         # NOTE: You can increase the storage size
         resources:
           requests:

@@ -97,6 +97,7 @@ spec:
         accessModes:
           - ReadWriteOnce
         storageClassName: local-storage
+        volumeName: exosuite-elasticsearch-volume-prod
         # NOTE: You can increase the storage size
         resources:
           requests:
@@ -115,6 +116,6 @@ spec:
   capacity:
     storage: 50Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   hostPath:
     path: "/mnt/data/exosuite-elasticsearch"

@@ -53,6 +53,8 @@ def generateKubernetesDeployment(container: Container, selectedRegistry: Registr
                                                           " 'elastic:create-indexes' 'passport:keys'")
         elif container == Container.PHP_FPM_WEBSITE and env == Env.STAGING:
             dockerFileContent = dockerFileContent.replace(Token.SCRIPT.value, " 'api:retrieve'")
+        else:
+            dockerFileContent = dockerFileContent.replace(Token.SCRIPT.value, "")
 
     outputDir = Directory.API if opts.api else Directory.WEBSITE
     writeToFile(container, currentEnv, dockerFileContent, outputDir)

@@ -51,7 +51,7 @@ spec:
                 - php-fpm-healthcheck
                 - --listen-queue-len=128 # fails if there are more than 10 processes waiting in the fpm queue
             initialDelaySeconds: 0
-            periodSeconds: 10
+            periodSeconds: 20
 
           lifecycle:
             postStart:

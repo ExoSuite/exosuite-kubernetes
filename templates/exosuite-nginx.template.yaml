@@ -53,10 +53,10 @@ spec:
               scheme: HTTPS
               path: /monitoring/alive
               port: 443
-            initialDelaySeconds: 20
+            initialDelaySeconds: 1
+            periodSeconds: 5
             failureThreshold: 2
             timeoutSeconds: 1
-            periodSeconds: 5
 
       imagePullSecrets:
         - name: <REGISTRY_SECRET>

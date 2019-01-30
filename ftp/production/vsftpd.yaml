@@ -44,7 +44,7 @@ spec:
             - name: FTP_PASS
               value: "4mFKMDwfaGKxmWT96GwXWD4"
             - name: PASV_ENABLE
-              value: NO
+              value: "NO"
           volumeMounts:
             - name: exosuite-vsftpd-volume-prod
               mountPath: /home/vsftpd

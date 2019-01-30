@@ -55,6 +55,30 @@ def generateKubernetesDeployment(container: Container, selectedRegistry: Registr
             dockerFileContent = dockerFileContent.replace(Token.SCRIPT.value, " 'api:retrieve'")
         else:
             dockerFileContent = dockerFileContent.replace(Token.SCRIPT.value, "")
+    elif container.isScheduler() and env == Env.PRODUCTION:
+        dockerFileContent = dockerFileContent \
+            .replace(Token.OPTIONAL_VOLUME_MOUNT.value, 'volumeMounts:') \
+            .replace(Token.OPTIONAL_CONTAINER_MOUNT_PATH.value,
+                     'mountPath: /var/www/exosuite-users-api/storage/vsftpd') \
+            .replace(Token.OPTIONAL_VOLUME_NAME.value, '- name: exosuite-scheduler-vsftpd-mount') \
+            .replace(Token.OPTIONAL_VOLUME.value, 'volumes:') \
+            .replace(Token.OPTIONAL_VOLUME_HOST_PATH.value, 'hostPath:') \
+            .replace(Token.OPTIONAL_VOLUME_PATH.value, 'path: "/var/www/exosuite-vsftpd"') \
+            .replace(Token.OPTIONAL_NODE_TYPE.value, 'type: production') \
+            .replace(Token.OPTIONAL_NODE_SELECTOR.value, 'nodeSelector:')
+
+    else:
+        dockerFileContent = dockerFileContent \
+            .replace(Token.OPTIONAL_VOLUME_MOUNT.value, '') \
+            .replace(Token.OPTIONAL_CONTAINER_MOUNT_PATH.value, '') \
+            .replace(Token.OPTIONAL_VOLUME_NAME.value, '') \
+            .replace(Token.OPTIONAL_VOLUME.value, '') \
+            .replace(Token.OPTIONAL_VOLUME_HOST_PATH.value, '') \
+            .replace(Token.OPTIONAL_VOLUME_PATH.value, '') \
+            .replace(Token.OPTIONAL_NODE_TYPE.value, '') \
+            .replace(Token.OPTIONAL_NODE_SELECTOR.value, '') \
+            .replace(Token.OPTIONAL_NODE_TYPE.value, '') \
+            .replace(Token.OPTIONAL_NODE_SELECTOR.value, '')
 
     outputDir = Directory.API if opts.api else Directory.WEBSITE
     writeToFile(container, currentEnv, dockerFileContent, outputDir)

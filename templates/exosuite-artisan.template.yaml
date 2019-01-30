@@ -27,5 +27,15 @@ spec:
                 command: [
                   "/usr/local/bin/init"
                 ]
+          <OPTIONAL_VOLUME_MOUNT>
+            <OPTIONAL_VOLUME_NAME>
+              <OPTIONAL_CONTAINER_MOUNT_PATH>
+
       imagePullSecrets:
         - name: <REGISTRY_SECRET>
+      <OPTIONAL_VOLUME>
+        <OPTIONAL_VOLUME_NAME>
+          <OPTIONAL_VOLUME_HOST_PATH>
+            <OPTIONAL_VOLUME_PATH>
+      <OPTIONAL_NODE_SELECTOR>
+        <OPTIONAL_NODE_TYPE>

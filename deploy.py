@@ -31,6 +31,7 @@ parser.add_option("--registries", action="store_true", dest="registries",
 parser.add_option("--init-cluster", action="store_true", dest="init_cluster", help="Init ExoSuite Kubernetes cluster.")
 parser.add_option("--elasticsearch", action="store_true", dest="elastic_search", help="Deploy elasticsearch cluster.")
 parser.add_option("--laravel-echo", action="store_true", dest="laravel_echo", help="Deploy laravel-echo-server.")
+parser.add_option("--ftp", action="store_true", dest='ftp', help='Deploy ftp server')
 
 (opts, args) = parser.parse_args()
 if opts.namespaces is None and opts.storageclass is None and opts.registries is None and opts.init_cluster is None:
@@ -76,6 +77,8 @@ elif opts.elastic_search:
     os.system(Container.ELASTICSEARCH.toKubectlDeployCmd(Directory.ELASTICSEARCH, env))
 elif opts.laravel_echo:
     os.system(Container.LARAVEL_ECHO.toKubectlDeployCmd(Directory.LARAVEL_ECHO, env))
+elif opts.ftp:
+    os.system(Container.VSFTPD.toKubectlDeployCmd(Directory.FTP, env))
 elif opts.registries:
     registries()
 elif opts.namespaces:

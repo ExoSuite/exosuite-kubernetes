@@ -30,6 +30,7 @@ class Directory(Enum):
     DATABASE = "database"
     ELASTICSEARCH = "elasticsearch"
     LARAVEL_ECHO = "laravel-echo-server"
+    FTP = "ftp"
 
     def toPath(self, env: Env = None):
         path = os.path.dirname(os.path.realpath(__file__))
@@ -44,6 +45,8 @@ class ContainerType(Enum):
     PHP_FPM = "php-fpm"
     NGINX = "nginx"
     POSTGRES = "postgres"
+    SCHEDULER = "scheduler"
+    HORIZON = "horizon"
 
 
 class DockerImage(Enum):
@@ -71,6 +74,7 @@ class Container(Enum):
     SCHEDULER = "exosuite-scheduler"
     ELASTICSEARCH = "elasticsearch"
     LARAVEL_ECHO = "server"
+    VSFTPD = "vsftpd"
 
     def toYaml(self, outputDir: Directory, env: Env = None) -> str:
         return outputDir.toPath(env) + self.value + '.yaml'
@@ -94,6 +98,12 @@ class Container(Enum):
 
     def isPhpFpm(self) -> bool:
         return str(self.value).find(str(ContainerType.PHP_FPM)) > 0
+
+    def isScheduler(self) -> bool:
+        return str(self.value).find(str(ContainerType.SCHEDULER)) > 0
+
+    def isHorizon(self) -> bool:
+        return str(self.value).find(str(ContainerType.HORIZON)) > 0
 
     def isNginx(self) -> bool:
         return str(self.value).find(str(ContainerType.NGINX)) > 0
@@ -126,6 +136,14 @@ class Token(Enum):
     SCRIPT = "<SCRIPT>"
     NODE = "<NODE>"
     STORAGE = "<STORAGE>"
+    OPTIONAL_VOLUME_MOUNT = "<OPTIONAL_VOLUME_MOUNT>"
+    OPTIONAL_CONTAINER_MOUNT_PATH = "<OPTIONAL_CONTAINER_MOUNT_PATH>"
+    OPTIONAL_VOLUME_NAME = "<OPTIONAL_VOLUME_NAME>"
+    OPTIONAL_VOLUME = "<OPTIONAL_VOLUME>"
+    OPTIONAL_VOLUME_HOST_PATH = "<OPTIONAL_VOLUME_HOST_PATH>"
+    OPTIONAL_VOLUME_PATH = "<OPTIONAL_VOLUME_PATH>"
+    OPTIONAL_NODE_SELECTOR = "<OPTIONAL_NODE_SELECTOR>"
+    OPTIONAL_NODE_TYPE = "<OPTIONAL_NODE_TYPE>"
 
     def key(self):
         return str(self.value).replace("<", '').replace(">", '')

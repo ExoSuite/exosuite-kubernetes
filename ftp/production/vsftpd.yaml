@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: production
+  name: exosuite-vsftpd
+  labels:
+    app: exosuite-vsftpd
+spec:
+  type: ClusterIP
+  ports:
+    - port: 20
+      name: vsftpd-data
+    - port: 21
+      name: vsftpd-control
+  selector:
+    app: exosuite-vsftpd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: production
+  name: exosuite-vsftpd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exosuite-vsftpd
+  template:
+    metadata:
+      labels:
+        app: exosuite-vsftpd
+    spec:
+      containers:
+        - name: exosuite-vsftpd
+          image: fauria/vsftpd
+          ports:
+            - containerPort: 20
+              name: vsftpd-data
+            - containerPort: 21
+              name: vsftpd-control
+          env:
+            - name: FTP_USER
+              value: "exosuite"
+            - name: FTP_PASS
+              value: "4mFKMDwfaGKxmWT96GwXWD4"
+            - name: PASV_ENABLE
+              value: NO
+          volumeMounts:
+            - name: exosuite-vsftpd-volume-prod
+              mountPath: /home/vsftpd
+      volumes:
+        - name: exosuite-vsftpd-volume-prod
+          persistentVolumeClaim:
+            claimName: exosuite-vsftpd-claim
+      nodeSelector:
+        type: production
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: production
+  name: exosuite-vsftpd-volume-prod
+  labels:
+    type: local
+    app: exosuite-vsftpd
+spec:
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - mail.exosuite.fr
+  storageClassName: local-storage
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/var/www/exosuite-vsftpd"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: production
+  name: exosuite-vsftpd-claim
+  labels:
+    app: exosuite-vsftpd
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi

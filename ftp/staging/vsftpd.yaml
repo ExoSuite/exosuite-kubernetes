@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: staging
+  name: exosuite-vsftpd
+  labels:
+    app: exosuite-vsftpd
+spec:
+  type: ClusterIP
+  ports:
+    - port: 20
+      name: vsftpd-data
+    - port: 21
+      name: vsftpd-control
+  selector:
+    app: exosuite-vsftpd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: staging
+  name: exosuite-vsftpd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exosuite-vsftpd
+  template:
+    metadata:
+      labels:
+        app: exosuite-vsftpd
+    spec:
+      containers:
+        - name: exosuite-vsftpd
+          image: fauria/vsftpd
+          ports:
+            - containerPort: 20
+              name: vsftpd-data
+            - containerPort: 21
+              name: vsftpd-control
+          env:
+            - name: FTP_USER
+              value: "exosuite"
+            - name: FTP_PASS
+              value: "aUxDF94ALY2YWrTpxhc5gs8"
+            - name: PASV_ENABLE
+              value: NO
+      nodeSelector:
+        type: staging

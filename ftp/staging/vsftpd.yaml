@@ -44,6 +44,6 @@ spec:
             - name: FTP_PASS
               value: "aUxDF94ALY2YWrTpxhc5gs8"
             - name: PASV_ENABLE
-              value: NO
+              value: "NO"
       nodeSelector:
         type: staging

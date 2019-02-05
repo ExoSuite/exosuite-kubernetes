@@ -59,7 +59,7 @@ spec:
                 command: [
                   "sh",
                   "-c",
-                  "/usr/local/bin/init <MIGRATE> <SCRIPT>"
+                  "/usr/local/bin/init <SCRIPT> <MIGRATE>"
                 ]
 
       imagePullSecrets:

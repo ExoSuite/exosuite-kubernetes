@@ -166,7 +166,7 @@ class RegistrySecret(Enum):
 
 
 class Registry(Enum):
-    STAGING = "dev.exosuite.fr:5000/exosuite"
+    STAGING = "teamexosuite.cloud:5000/exosuite"
     PRODUCTION = "exosuite.fr:5000/exosuite"
 
     def toRegistrySecret(self):

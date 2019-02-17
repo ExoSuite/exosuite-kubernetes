@@ -46,7 +46,7 @@ else:
 
 def registries():
     os.system(
-        createKubectlRegistryCmd(RegistrySecret.STAGING, "dev.exosuite.fr:5000", "exosuite-dev", "N8jSfUeH4kPyYSLW"))
+        createKubectlRegistryCmd(RegistrySecret.STAGING, "teamexosuite.cloud:5000", "exosuite-dev", "N8jSfUeH4kPyYSLW"))
     os.system(createKubectlRegistryCmd(RegistrySecret.PRODUCTION, "exosuite.fr:5000", "exosuite", "eG4FE5NbknfT79uR"))
 
 

@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: exosuite-laravel-echo-server
-          image: dev.exosuite.fr:5000/exosuite/exosuite-laravel-echo-server:1.1
+          image: teamexosuite.cloud:5000/exosuite/exosuite-laravel-echo-server:1.1
           ports:
             - containerPort: 6001
               name: echo-server

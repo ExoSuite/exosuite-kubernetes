@@ -41,7 +41,7 @@ def generateKubernetesDeployment(container: Container, selectedRegistry: Registr
         .replace(Token.ENV.value, str(currentEnv))
 
     if container.isPhpFpm():
-        migrate_cmd = SystemCommand.LARAVEL_MIGRATE_FRESH.value if opts.staging else SystemCommand.LARAVEL_MIGRATE.value
+        migrate_cmd = SystemCommand.LARAVEL_MIGRATE.value
         migrate_cmd += " --seed'"
 
         dockerFileContent = dockerFileContent \

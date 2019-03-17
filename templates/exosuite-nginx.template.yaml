@@ -39,7 +39,6 @@ spec:
           image: <REGISTRY>/<CONTAINER>:<VERSION>
           ports:
             - containerPort: 443
-
           livenessProbe:
             httpGet:
               scheme: HTTPS
@@ -47,7 +46,7 @@ spec:
               port: 443
             initialDelaySeconds: 5
             failureThreshold: 2
-            periodSeconds: 15
+            periodSeconds: 30
           readinessProbe:
             httpGet:
               scheme: HTTPS

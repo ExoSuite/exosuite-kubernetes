@@ -37,14 +37,14 @@ spec:
               name: "ftp-server"
           volumeMounts:
             - mountPath: "/home/vsftpd"
-              name: exosuite-vsftpd-volume
+              name: exosuite-vsftpd-volume-prod
           env:
             - name: FTP_USER
               value: "exosuite"
             - name: FTP_PASS
               value: "4mFKMDwfaGKxmWT96GwXWD4"
       volumes:
-        - name: exosuite-vsftpd-volume
+        - name: exosuite-vsftpd-volume-prod
           persistentVolumeClaim:
             claimName: exosuite-vsftpd-claim
 ---
@@ -52,7 +52,7 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   namespace: production
-  name: exosuite-vsftpd-volume
+  name: exosuite-vsftpd-volume-prod
   labels:
     type: local
     app: exosuite-vsftpd

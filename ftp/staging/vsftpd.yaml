@@ -37,7 +37,7 @@ spec:
               name: "ftp-server"
           volumeMounts:
             - mountPath: "/home/vsftpd"
-              name: exosuite-vsftpd-claim
+              name: exosuite-vsftpd-volume
           env:
             - name: FTP_USER
               value: "exosuite"

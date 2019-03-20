@@ -57,8 +57,6 @@ spec:
             postStart:
               exec:
                 command: [
-                  "sh",
-                  "-c",
                   "/usr/local/bin/init <SCRIPT> <MIGRATE>"
                 ]
 

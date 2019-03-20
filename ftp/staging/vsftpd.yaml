@@ -43,6 +43,8 @@ spec:
               value: "exosuite"
             - name: FTP_PASS
               value: "aUxDF94ALY2YWrTpxhc5gs8"
+      nodeSelector:
+        type: exosuite-kvm
 ---
 kind: PersistentVolume
 apiVersion: v1

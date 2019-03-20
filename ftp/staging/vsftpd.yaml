@@ -45,12 +45,16 @@ spec:
               value: "aUxDF94ALY2YWrTpxhc5gs8"
       nodeSelector:
         type: exosuite-kvm
+      volumes:
+        - name: exosuite-vsftpd-volume
+          persistentVolumeClaim:
+            claimName: exosuite-vsftpd-claim
 ---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
   namespace: staging
-  name: exosuite-vsftpd-volume-staging
+  name: exosuite-vsftpd-volume
   labels:
     type: local
     app: exosuite-vsftpd

@@ -19,10 +19,6 @@ spec:
           value: "exosuite"
         - name: FTP_PASS
           value: "aUxDF94ALY2YWrTpxhc5gs8"
-        - name: PASV_ENABLE
-          value: "NO"
-        - name: LOG_STDOUT
-          value: "log"
   nodeSelector:
     type: staging
 

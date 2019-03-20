@@ -8,12 +8,9 @@ spec:
     - name: exosuite-vsftpd
       image: fauria/vsftpd
       ports:
-        - containerPort: 20
-          hostPort: 20
-          name: ftp-data
-        - containerPort: 21
-          hostPort: 21
-          name: ftp-server
+      	- containerPort: 21
+          protocol: TCP
+          name: "ftp-server"
       env:
         - name: FTP_USER
           value: "exosuite"

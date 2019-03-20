@@ -44,14 +44,12 @@ spec:
               command:
                 - php-fpm-healthcheck # a simple ping since this means it's ready to handle traffic
             initialDelaySeconds: 1
-            periodSeconds: 5
           livenessProbe:
             exec:
               command:
                 - php-fpm-healthcheck
                 - --listen-queue-len=128 # fails if there are more than 10 processes waiting in the fpm queue
             initialDelaySeconds: 0
-            periodSeconds: 30
 
           lifecycle:
             postStart:

@@ -35,10 +35,51 @@ spec:
             - containerPort: 21
               protocol: TCP
               name: "ftp-server"
+          volumeMounts:
+            - mountPath: "/home/vsftpd"
+              name: exosuite-vsftpd-claim
           env:
             - name: FTP_USER
               value: "exosuite"
             - name: FTP_PASS
               value: "aUxDF94ALY2YWrTpxhc5gs8"
-      nodeSelector:
-        type: staging
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: staging
+  name: exosuite-vsftpd-volume-staging
+  labels:
+    type: local
+    app: exosuite-vsftpd
+spec:
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - exosuite-kvm
+  storageClassName: local-storage
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/var/www/exosuite-vsftpd"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: staging
+  name: exosuite-vsftpd-claim
+  labels:
+    app: exosuite-vsftpd
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi

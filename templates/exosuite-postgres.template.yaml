@@ -45,7 +45,8 @@ metadata:
 spec:
   storageClassName: local-storage
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
+    - ReadOnlyMany
   resources:
     requests:
       storage: <STORAGE>

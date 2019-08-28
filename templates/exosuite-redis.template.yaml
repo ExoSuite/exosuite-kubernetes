@@ -72,7 +72,8 @@ spec:
   capacity:
     storage: <STORAGE>
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
+    - ReadOnlyMany
   storageClassName: local-storage
   hostPath:
     path: "/var/www/<CONTAINER>"

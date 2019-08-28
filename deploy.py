@@ -87,6 +87,7 @@ def autoscaler() -> None:
     # END REDIS #
     # MISC #
     os.system(Container.LARAVEL_ECHO.toKubectlAutoscaleCmd(scaler, env))
+    os.system(Container.VSFTPD.toKubectlAutoscaleCmd(scaler, env))
     # END MISC #
 
 

@@ -32,6 +32,7 @@ spec:
     storage: <STORAGE>
   accessModes:
     - ReadWriteOnce
+    - ReadOnlyMany
   hostPath:
     path: "/var/www/<CONTAINER>"
 ---

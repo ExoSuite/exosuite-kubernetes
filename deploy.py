@@ -119,6 +119,6 @@ elif opts.init_cluster:
     registries()
     os.system("git clone https://github.com/kubernetes-incubator/metrics-server.git")
     os.system("kubectl create -f metrics-server/deploy/1.8+/")
-    os.system("rm -r metrics-server")
+    os.system("rm -rf metrics-server")
 else:
     parser.print_help()

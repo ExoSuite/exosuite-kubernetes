@@ -91,7 +91,6 @@ def autoscaler() -> None:
     # END MISC #
 
 
-
 if opts.website:
     os.system(Container.PHP_FPM_WEBSITE.toKubectlDeployCmd(Directory.WEBSITE, env))
     os.system(Container.NGINX_WEBSITE.toKubectlDeployCmd(Directory.WEBSITE, env))

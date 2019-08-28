@@ -56,6 +56,7 @@ class DockerImage(Enum):
 
 class SystemCommand(Enum):
     KUBECTL_APPLY = "kubectl apply -f "
+    KUBECTL_AUTOSCALE_DEPLOYMENT = "kubectl autoscale deployment "
     LARAVEL_MIGRATE_FRESH = "'migrate:fresh --force"
     LARAVEL_MIGRATE = "'migrate --force"
     UPDATE_POSTGIS = "update-postgis.sh"
@@ -81,6 +82,9 @@ class Container(Enum):
 
     def toKubectlDeployCmd(self, outputDir: Directory, env: Env = None) -> str:
         return SystemCommand.KUBECTL_APPLY.value + self.toYaml(outputDir, env)
+
+    def toKubectlAutoscaleCmd(self, scaler: str) -> str:
+        return SystemCommand.KUBECTL_AUTOSCALE_DEPLOYMENT.value + self.value + scaler
 
     def toRelativeGeneratedFile(self, outputDir: Directory, env: Env = None) -> str:
         directory = outputDir.toPath(env) + self.value + '.yaml'

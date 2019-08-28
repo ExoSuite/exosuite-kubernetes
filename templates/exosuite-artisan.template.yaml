@@ -21,6 +21,11 @@ spec:
       containers:
         - name: <CONTAINER>
           image: <REGISTRY>/<CONTAINER>:<VERSION>
+          resources:
+            requests:
+              - cpu: "200m"
+            limits:
+              - cpu: "500m"
           lifecycle:
             postStart:
               exec:

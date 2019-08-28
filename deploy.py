@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 
 from lib import OptionParser, Container, Directory, Env, RegistrySecret
@@ -32,6 +34,7 @@ parser.add_option("--init-cluster", action="store_true", dest="init_cluster", he
 parser.add_option("--elasticsearch", action="store_true", dest="elastic_search", help="Deploy elasticsearch cluster.")
 parser.add_option("--laravel-echo", action="store_true", dest="laravel_echo", help="Deploy laravel-echo-server.")
 parser.add_option("--ftp", action="store_true", dest='ftp', help='Deploy ftp server')
+parser.add_option("--auto-scaler", action="store_true", dest='auto_scaler', help='Deploy autoscalers')
 
 (opts, args) = parser.parse_args()
 if opts.namespaces is None and opts.storageclass is None and opts.registries is None and opts.init_cluster is None:
@@ -57,6 +60,25 @@ def namespaces():
 
 def storageClasses():
     os.system("kubectl apply -f StorageClass/local.yaml")
+
+
+def autoscaler() -> None:
+    scaler = " --cpu-percent=50 --min=1 --max=10"
+
+    print(Container.NGINX_API.toKubectlAutoscaleCmd(scaler))
+
+    # NGINX #
+    os.system(Container.NGINX_API.toKubectlAutoscaleCmd(scaler))
+    os.system(Container.NGINX_WEBSITE.toKubectlAutoscaleCmd(scaler))
+    # END NGINX #
+    # PHP_FPM #
+    os.system(Container.PHP_FPM_API.toKubectlAutoscaleCmd(scaler))
+    os.system(Container.PHP_FPM_WEBSITE.toKubectlAutoscaleCmd(scaler))
+    # END PHP_FPM #
+    # ARTISAN #
+    os.system(Container.SCHEDULER.toKubectlAutoscaleCmd(scaler))
+    os.system(Container.HORIZON.toKubectlAutoscaleCmd(scaler))
+    # END ARTISAN #
 
 
 if opts.website:
@@ -85,6 +107,9 @@ elif opts.namespaces:
     namespaces()
 elif opts.storageclass:
     storageClasses()
+elif opts.auto_scaler:
+    autoscaler()
+
 elif opts.init_cluster:
     os.system("kubectl taint nodes --all node-role.kubernetes.io/master-")
     storageClasses()

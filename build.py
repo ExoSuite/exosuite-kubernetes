@@ -61,11 +61,11 @@ def generateKubernetesDeployment(container: Container, selectedRegistry: Registr
         dockerFileContent = dockerFileContent \
             .replace(Token.OPTIONAL_VOLUME_MOUNT.value, 'volumeMounts:') \
             .replace(Token.OPTIONAL_CONTAINER_MOUNT_PATH.value,
-                     'mountPath: /var/www/exosuite-users-api/storage/vsftpd') \
+                     'mountPath: /mnt/exosuite/containers/exosuite-users-api/storage/vsftpd') \
             .replace(Token.OPTIONAL_VOLUME_NAME.value, '- name: exosuite-scheduler-vsftpd-mount') \
             .replace(Token.OPTIONAL_VOLUME.value, 'volumes:') \
             .replace(Token.OPTIONAL_VOLUME_HOST_PATH.value, 'hostPath:') \
-            .replace(Token.OPTIONAL_VOLUME_PATH.value, 'path: "/var/www/exosuite-vsftpd"') \
+            .replace(Token.OPTIONAL_VOLUME_PATH.value, 'path: "/mnt/exosuite/containers/exosuite-vsftpd"') \
             .replace(Token.OPTIONAL_NODE_TYPE.value, 'type: production') \
             .replace(Token.OPTIONAL_NODE_SELECTOR.value, 'nodeSelector:')
 

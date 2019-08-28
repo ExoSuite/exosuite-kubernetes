@@ -71,7 +71,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/var/www/exosuite-vsftpd"
+    path: "/mnt/exosuite/containers/exosuite-vsftpd"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

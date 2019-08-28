@@ -116,7 +116,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/var/www/exosuite-elasticsearch"
+    path: "/mnt/exosuite/containers/exosuite-elasticsearch"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

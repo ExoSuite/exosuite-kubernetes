@@ -19,14 +19,6 @@ metadata:
     type: local
     app: <CONTAINER>
 spec:
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - mail.exosuite.fr
   storageClassName: local-storage
   capacity:
     storage: <STORAGE>
@@ -34,7 +26,7 @@ spec:
     - ReadWriteOnce
     - ReadOnlyMany
   hostPath:
-    path: "/var/www/<CONTAINER>"
+    path: "/mnt/exosuite/containers/<CONTAINER>"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

@@ -40,11 +40,11 @@ spec:
             - containerPort: 6379
           resources:
             requests:
+              cpu: "250m"
+              memory: "250Mi"
+            limits:
               cpu: "500m"
               memory: "500Mi"
-            limits:
-              cpu: "1000m"
-              memory: "1000Mi"
           command: ["sh"]
           args: ["-c", "docker-entrypoint.sh --appendonly yes"]
           volumeMounts:

@@ -30,6 +30,13 @@ spec:
     spec:
       containers:
         - name: exosuite-vsftpd
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "250Mi"
+            limits:
+              cpu: "500m"
+              memory: "500Mi"
           image: fauria/vsftpd
           ports:
             - containerPort: 21
@@ -70,6 +77,7 @@ spec:
     storage: 200Gi
   accessModes:
     - ReadWriteOnce
+    - ReadOnlyMany
   hostPath:
     path: "/mnt/exosuite/containers/exosuite-vsftpd"
 ---
@@ -84,6 +92,7 @@ spec:
   storageClassName: local-storage
   accessModes:
     - ReadWriteOnce
+    - ReadOnlyMany
   resources:
     requests:
       storage: 200Gi

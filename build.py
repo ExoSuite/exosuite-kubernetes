@@ -3,8 +3,11 @@
 from lib import *
 
 parser = OptionParser()
-parser.add_option("--version", action="store", dest="version", default=None,
-                  help="Choose which version will be used in generated yaml.")
+parser.add_option(
+    "--version",
+    action="store", dest="version",
+    default=None, help="Choose which version will be used in generated yaml."
+)
 parser.add_option("--staging", action="store_true", dest="staging", help="Choose staging for generated yaml.")
 parser.add_option("--production", action="store_true", dest="production", help="Choose production for generated yaml.")
 parser.add_option("--website", action="store_true", dest="website", help="Generate website yaml.")

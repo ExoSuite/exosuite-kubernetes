@@ -64,7 +64,6 @@ def storageClasses():
 
 def autoscaler() -> None:
     scaler = " --cpu-percent=50 --min=1 --max=10"
-
     print(Container.NGINX_API.toKubectlAutoscaleCmd(scaler, env))
 
     # NGINX #

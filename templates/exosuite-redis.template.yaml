@@ -61,6 +61,14 @@ metadata:
   labels:
     type: local
 spec:
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: type
+              operator: In
+              values:
+                - <ENV>
   capacity:
     storage: <STORAGE>
   accessModes:

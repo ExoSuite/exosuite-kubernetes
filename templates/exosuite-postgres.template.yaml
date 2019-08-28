@@ -19,6 +19,14 @@ metadata:
     type: local
     app: <CONTAINER>
 spec:
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: type
+              operator: In
+              values:
+                - <ENV>
   storageClassName: local-storage
   capacity:
     storage: <STORAGE>

@@ -52,11 +52,13 @@ spec:
               path: /monitoring/alive
               port: 443
             initialDelaySeconds: 1
-          resources:
-            requests:
-              cpu: "200m"
-            limits:
-              cpu: "500m"
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "100Mi"
+          limits:
+            cpu: "500m"
+            memory: "200Mi"
 
       imagePullSecrets:
         - name: <REGISTRY_SECRET>

@@ -121,7 +121,7 @@ def generateDatabaseKubernetesDeployment(container: Container, currentEnv: Env):
     if env == Env.PRODUCTION:
         dockerFileContent = dockerFileContent.replace("-volume", "-volume-prod").replace(Token.STORAGE.value, '50Gi')
     else:
-        dockerFileContent = dockerFileContent.replace("-volume", "-volume-prod").replace(Token.STORAGE.value, '10Gi')
+        dockerFileContent = dockerFileContent.replace(Token.STORAGE.value, '50Gi')
 
     writeToFile(container, currentEnv, dockerFileContent, Directory.DATABASE)
 

@@ -64,7 +64,7 @@ spec:
                 command: [
                   "sh",
                   "-c",
-                  "/usr/local/bin/init <SCRIPT> <MIGRATE> 2>&1 | tee -a /var/log/init-<CONTAINER>.log"
+                  "/usr/local/bin/init <MIGRATE> <SCRIPT> 2>&1 | tee -a /var/log/init-<CONTAINER>.log"
                 ]
 
       imagePullSecrets:

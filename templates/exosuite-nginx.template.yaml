@@ -37,6 +37,13 @@ spec:
       containers:
         - name: <CONTAINER>
           image: <REGISTRY>/<CONTAINER>:<VERSION>
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "100Mi"
+            limits:
+              cpu: "500m"
+              memory: "200Mi"
           ports:
             - containerPort: 443
           livenessProbe:
@@ -52,13 +59,6 @@ spec:
               path: /monitoring/alive
               port: 443
             initialDelaySeconds: 1
-        resources:
-          requests:
-            cpu: "200m"
-            memory: "100Mi"
-          limits:
-            cpu: "500m"
-            memory: "200Mi"
 
       imagePullSecrets:
         - name: <REGISTRY_SECRET>

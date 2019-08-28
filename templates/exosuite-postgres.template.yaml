@@ -74,6 +74,13 @@ spec:
         - name: <CONTAINER>
           image: <IMAGE>
           imagePullPolicy: "Always"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "500Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1000Mi"
           ports:
             - containerPort: 5432
           envFrom:

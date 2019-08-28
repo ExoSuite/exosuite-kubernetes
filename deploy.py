@@ -77,7 +77,14 @@ def autoscaler() -> None:
     os.system(Container.SCHEDULER.toKubectlAutoscaleCmd(scaler, env))
     os.system(Container.HORIZON.toKubectlAutoscaleCmd(scaler, env))
     # END ARTISAN #
-
+    # DATABASES #
+    os.system(Container.POSTGRES_API.toKubectlAutoscaleCmd(scaler, env))
+    os.system(Container.POSTGRES_WEBSITE.toKubectlAutoscaleCmd(scaler, env))
+    # END DATABASES #
+    # REDIS #
+    os.system(Container.REDIS_LIVE.toKubectlAutoscaleCmd(scaler, env))
+    os.system(Container.REDIS_STORE.toKubectlAutoscaleCmd(scaler, env))
+    # END REDIS #
     # MISC #
     os.system(Container.LARAVEL_ECHO.toKubectlAutoscaleCmd(scaler, env))
     # END MISC #

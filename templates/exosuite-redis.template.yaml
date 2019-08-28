@@ -38,6 +38,13 @@ spec:
           image: redis:alpine
           ports:
             - containerPort: 6379
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "500Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1000Mi"
           command: ["sh"]
           args: ["-c", "docker-entrypoint.sh --appendonly yes"]
           volumeMounts:

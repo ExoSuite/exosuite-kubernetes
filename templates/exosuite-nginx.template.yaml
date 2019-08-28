@@ -54,9 +54,9 @@ spec:
             initialDelaySeconds: 1
           resources:
             requests:
-              - cpu: "200m"
+              cpu: "200m"
             limits:
-              - cpu: "500m"
+              cpu: "500m"
 
       imagePullSecrets:
         - name: <REGISTRY_SECRET>

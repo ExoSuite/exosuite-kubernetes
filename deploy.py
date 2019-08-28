@@ -64,7 +64,6 @@ def storageClasses():
 
 def autoscaler() -> None:
     scaler = " --cpu-percent=50 --min=1 --max=10"
-    print(Container.NGINX_API.toKubectlAutoscaleCmd(scaler, env))
 
     # NGINX #
     os.system(Container.NGINX_API.toKubectlAutoscaleCmd(scaler, env))
@@ -78,6 +77,11 @@ def autoscaler() -> None:
     os.system(Container.SCHEDULER.toKubectlAutoscaleCmd(scaler, env))
     os.system(Container.HORIZON.toKubectlAutoscaleCmd(scaler, env))
     # END ARTISAN #
+
+    # MISC #
+    os.system(Container.LARAVEL_ECHO.toKubectlAutoscaleCmd(scaler, env))
+    # END MISC #
+
 
 
 if opts.website:

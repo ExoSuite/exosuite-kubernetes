@@ -41,9 +41,9 @@ spec:
             - containerPort: 9000
           resources:
             requests:
-              - cpu: "200m"
+              cpu: "200m"
             limits:
-              - cpu: "500m"
+              cpu: "500m"
           readinessProbe:
             exec:
               command:

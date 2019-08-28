@@ -33,5 +33,10 @@ spec:
           ports:
             - containerPort: 6001
               name: echo-server
+          resources:
+            requests:
+              cpu: "200m"
+            limits:
+              cpu: "500m"
       imagePullSecrets:
         - name: staging-registry

@@ -74,7 +74,7 @@ class Container(Enum):
     HORIZON = "exosuite-laravel-horizon"
     SCHEDULER = "exosuite-scheduler"
     ELASTICSEARCH = "elasticsearch"
-    LARAVEL_ECHO = "laravel-echo-server"
+    LARAVEL_ECHO = "exosuite-laravel-echo-server"
     VSFTPD = "vsftpd"
 
     def toYaml(self, outputDir: Directory, env: Env = None) -> str:

@@ -33,8 +33,9 @@ parser.add_option("--registries", action="store_true", dest="registries",
 parser.add_option("--init-cluster", action="store_true", dest="init_cluster", help="Init ExoSuite Kubernetes cluster.")
 parser.add_option("--elasticsearch", action="store_true", dest="elastic_search", help="Deploy elasticsearch cluster.")
 parser.add_option("--laravel-echo", action="store_true", dest="laravel_echo", help="Deploy laravel-echo-server.")
-parser.add_option("--ftp", action="store_true", dest='ftp', help='Deploy ftp server')
-parser.add_option("--auto-scaler", action="store_true", dest='auto_scaler', help='Deploy autoscalers')
+parser.add_option("--ftp", action="store_true", dest='ftp', help='Deploy ftp server.')
+parser.add_option("--auto-scaler", action="store_true", dest='auto_scaler', help='Deploy autoscalers.')
+parser.add_option("--metric-server", action="store_true", dest='metric_server', help='Deploy k8 metric server.')
 
 (opts, args) = parser.parse_args()
 if opts.namespaces is None and opts.storageclass is None and opts.registries is None and opts.init_cluster is None:
@@ -112,6 +113,10 @@ elif opts.storageclass:
     storageClasses()
 elif opts.auto_scaler:
     autoscaler()
+elif opts.metric_server:
+    os.system("git clone https://github.com/kubernetes-incubator/metrics-server.git")
+    os.system("kubectl create -f metrics-server/deploy/1.8+/")
+    os.system("rm -r metrics-server")
 
 elif opts.init_cluster:
     os.system("kubectl taint nodes --all node-role.kubernetes.io/master-")

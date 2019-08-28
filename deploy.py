@@ -65,19 +65,19 @@ def storageClasses():
 def autoscaler() -> None:
     scaler = " --cpu-percent=50 --min=1 --max=10"
 
-    print(Container.NGINX_API.toKubectlAutoscaleCmd(scaler))
+    print(Container.NGINX_API.toKubectlAutoscaleCmd(scaler, env))
 
     # NGINX #
-    os.system(Container.NGINX_API.toKubectlAutoscaleCmd(scaler))
-    os.system(Container.NGINX_WEBSITE.toKubectlAutoscaleCmd(scaler))
+    os.system(Container.NGINX_API.toKubectlAutoscaleCmd(scaler, env))
+    os.system(Container.NGINX_WEBSITE.toKubectlAutoscaleCmd(scaler, env))
     # END NGINX #
     # PHP_FPM #
-    os.system(Container.PHP_FPM_API.toKubectlAutoscaleCmd(scaler))
-    os.system(Container.PHP_FPM_WEBSITE.toKubectlAutoscaleCmd(scaler))
+    os.system(Container.PHP_FPM_API.toKubectlAutoscaleCmd(scaler, env))
+    os.system(Container.PHP_FPM_WEBSITE.toKubectlAutoscaleCmd(scaler, env))
     # END PHP_FPM #
     # ARTISAN #
-    os.system(Container.SCHEDULER.toKubectlAutoscaleCmd(scaler))
-    os.system(Container.HORIZON.toKubectlAutoscaleCmd(scaler))
+    os.system(Container.SCHEDULER.toKubectlAutoscaleCmd(scaler, env))
+    os.system(Container.HORIZON.toKubectlAutoscaleCmd(scaler, env))
     # END ARTISAN #
 
 

@@ -83,8 +83,8 @@ class Container(Enum):
     def toKubectlDeployCmd(self, outputDir: Directory, env: Env = None) -> str:
         return SystemCommand.KUBECTL_APPLY.value + self.toYaml(outputDir, env)
 
-    def toKubectlAutoscaleCmd(self, scaler: str) -> str:
-        return SystemCommand.KUBECTL_AUTOSCALE_DEPLOYMENT.value + self.value + scaler
+    def toKubectlAutoscaleCmd(self, scaler: str, env: Env = None) -> str:
+        return SystemCommand.KUBECTL_AUTOSCALE_DEPLOYMENT.value + self.value + scaler + " --namespace=%s" % env.value
 
     def toRelativeGeneratedFile(self, outputDir: Directory, env: Env = None) -> str:
         directory = outputDir.toPath(env) + self.value + '.yaml'

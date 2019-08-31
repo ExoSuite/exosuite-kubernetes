@@ -6,7 +6,6 @@ metadata:
   labels:
     app: <CONTAINER>
 spec:
-  clusterIP: None
   ports:
     - name: redis
       protocol: TCP

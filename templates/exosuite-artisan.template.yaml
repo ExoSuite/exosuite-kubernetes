@@ -23,11 +23,11 @@ spec:
           image: <REGISTRY>/<CONTAINER>:<VERSION>
           resources:
             requests:
-              cpu: "500m"
-              memory: "500Mi"
-            limits:
               cpu: "1000m"
               memory: "1000Mi"
+            limits:
+              cpu: "1500m"
+              memory: "1500Mi"
           lifecycle:
             postStart:
               exec:
